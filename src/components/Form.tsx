@@ -50,17 +50,25 @@ const Form = ({ onNewSub }: FormProps) => {
 
   const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    onNewSub(inputValues);
+    onNewSub(stateValues);
+    dispatch({ type: "clear" });
   };
 
   const handleChange = (
     evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setInputValues({ ...inputValues, [evt.target.name]: evt.target.value });
+    const { name, value } = evt.target;
+    dispatch({
+      type: "change_value",
+      payload: {
+        inputName: name,
+        inputValue: value,
+      },
+    });
   };
 
   const handleClear = () => {
-    setInputValues(INITIAL_STATE);
+    dispatch({ type: "clear" });
   };
 
   return (
