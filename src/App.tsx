@@ -3,6 +3,7 @@ import "./App.css";
 import Form from "./components/Form";
 import List from "./components/List";
 import { Sub, SubsResponseFromApi } from "./types";
+import axios from "axios";
 
 interface AppState {
   subs: Sub[];
@@ -17,8 +18,10 @@ function App() {
   const divRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchSubs = (): Promise<SubsResponseFromApi> => {
-      return fetch("http://localhost:3001/subs").then((res) => res.json());
+    const fetchSubs = () => {
+      return axios
+        .get<SubsResponseFromApi>("http://localhost:3001/subs")
+        .then((response) => response.data);
     };
 
     const mapFromApiToSubs = (apiResponse: SubsResponseFromApi): Array<Sub> => {
