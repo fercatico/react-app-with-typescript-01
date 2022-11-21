@@ -1,52 +1,15 @@
-import React, { useReducer, useState } from "react";
+import useNewSubForm from "../hooks/useNewSubForm";
 import { Sub } from "../types";
-
-interface FormState {
-  inputValues: Sub;
-}
 
 interface FormProps {
   onNewSub: (newSub: Sub) => void;
 }
 
-const INITIAL_STATE = {
-  nick: "",
-  subMonths: 0,
-  avatar: "",
-  description: "",
-};
-
-type FormReducerAction =
-  | {
-      type: "change_value";
-      payload: {
-        inputName: string;
-        inputValue: string;
-      };
-    }
-  | { type: "clear" };
-
-const formReducer = (
-  state: FormState["inputValues"],
-  action: FormReducerAction
-) => {
-  switch (action.type) {
-    case "change_value":
-      const { inputName, inputValue } = action.payload;
-      return {
-        ...state,
-        [inputName]: inputValue,
-      };
-    case "clear":
-      return INITIAL_STATE;
-  }
-};
-
 const Form = ({ onNewSub }: FormProps) => {
-  const [inputValues, setInputValues] =
-    useState<FormState["inputValues"]>(INITIAL_STATE);
+  /*const [inputValues, setInputValues] =
+    useState<FormState["inputValues"]>(INITIAL_STATE);*/
 
-  const [stateValues, dispatch] = useReducer(formReducer, INITIAL_STATE);
+  const [stateValues, dispatch] = useNewSubForm();
 
   const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -76,24 +39,24 @@ const Form = ({ onNewSub }: FormProps) => {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          value={inputValues.nick}
+          value={stateValues.nick}
           onChange={handleChange}
           name="nick"
         />
         <input
           type="number"
-          value={inputValues.subMonths}
+          value={stateValues.subMonths}
           onChange={handleChange}
           name="subMonths"
         />
         <input
           type="text"
-          value={inputValues.avatar}
+          value={stateValues.avatar}
           onChange={handleChange}
           name="avatar"
         />
         <textarea
-          value={inputValues.description}
+          value={stateValues.description}
           onChange={handleChange}
           name="description"
         />
